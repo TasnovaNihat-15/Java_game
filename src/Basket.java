@@ -1,17 +1,22 @@
 import java.awt.*;
+import javax.swing.*;
 
 public class Basket {
 
     private int x;
     private final int startX;
     private final int width = 100;
-    private final int height = 30;
+    private final int height = 50;
     private final int panelWidth;
+    private final Image basketImage;
 
     public Basket(int startX, int panelWidth) {
         this.x = startX;
-        this.startX=startX;
+        this.startX = startX;
         this.panelWidth = panelWidth;
+
+        // Load the image
+        basketImage = new ImageIcon(getClass().getResource("/Image/Basket.png")).getImage();
     }
 
     public void moveLeft() {
@@ -25,8 +30,8 @@ public class Basket {
     }
 
     public void draw(Graphics g, int panelHeight) {
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(x, panelHeight - 60, width, height);
+        // Draw only the basket image
+        g.drawImage(basketImage, x, panelHeight - 60, width, height, null);
     }
 
     public int getX() {
@@ -36,6 +41,7 @@ public class Basket {
     public int getWidth() {
         return width;
     }
+
     public void reset() {
         this.x = startX;
     }
