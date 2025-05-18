@@ -32,7 +32,6 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         timer = new Timer(20, this);
         timer.start();
     }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -55,13 +54,17 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         if (gameOver) {
             g.setFont(new Font("Arial", Font.BOLD, 40));
             g.setColor(Color.RED);
-            g.drawString("GAME OVER", WIDTH / 2 - 120, HEIGHT / 2 - 20);
+            g.drawString("GAME OVER", WIDTH / 2 - 120, HEIGHT / 2 - 40);
+
+            g.setFont(new Font("Arial", Font.PLAIN, 25));
+            g.setColor(Color.BLACK);
+            g.drawString("Your Score: " + score, WIDTH / 2 - 80, HEIGHT / 2);
 
             g.setFont(new Font("Arial", Font.PLAIN, 20));
-            g.setColor(Color.BLACK);
-            g.drawString("Press ENTER to Restart", WIDTH / 2 - 100, HEIGHT / 2 + 20);
+            g.drawString("Press ENTER to Restart", WIDTH / 2 - 100, HEIGHT / 2 + 40);
         }
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
