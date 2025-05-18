@@ -8,6 +8,8 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
     private final int WIDTH = 500;
     private final int HEIGHT = 700;
 
+    private boolean paused = false;
+
     private Timer timer;
     private Basket basket;
     ArrayList<Fruit> fruits = new ArrayList<>();
@@ -58,6 +60,12 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         FontMetrics metrics = g.getFontMetrics();
         int missedWidth = metrics.stringWidth(missedText);
         g.drawString(missedText, WIDTH - missedWidth - 20, 30);
+        if (paused && !gameOver) {
+            g.setFont(new Font("Arial", Font.BOLD, 36));
+            g.setColor(Color.BLUE);
+            g.drawString("PAUSED", WIDTH / 2 - 80, HEIGHT / 2);
+        }
+
 
         if (gameOver) {
             g.setFont(new Font("Arial", Font.BOLD, 40));
@@ -80,7 +88,7 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!gameOver) {
+        if (!gameOver && !paused) {
             for (Fruit fruit : fruits) {
                 fruit.move();
 
@@ -89,7 +97,7 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
                     fruit.reset(WIDTH);
                 } else if (fruit.isMissed(HEIGHT)) {
                     missedFruits++;
-                    fruit.reset(WIDTH); // Reset missed fruit instead of removing it
+                    fruit.reset(WIDTH);
 
                     if (missedFruits >= 5) {
                         gameOver = true;
@@ -117,6 +125,11 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         if (!gameOver) {
             if (e.getKeyCode() == KeyEvent.VK_LEFT) basket.moveLeft();
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) basket.moveRight();
+            if (e.getKeyCode() == KeyEvent.VK_P) {
+                paused = true;
+            } else if (e.getKeyCode() == KeyEvent.VK_R) {
+                paused = false;
+            }
         }
 
         if (gameOver && e.getKeyCode() == KeyEvent.VK_ENTER) {
