@@ -15,7 +15,7 @@ public class Basket {
         this.startX = startX;
         this.panelWidth = panelWidth;
 
-        // Load the image
+
         basketImage = new ImageIcon(getClass().getResource("/Image/Basket.png")).getImage();
     }
 
@@ -30,7 +30,7 @@ public class Basket {
     }
 
     public void draw(Graphics g, int panelHeight) {
-        // Draw only the basket image
+
         g.drawImage(basketImage, x, panelHeight - 60, width, height, null);
     }
 
@@ -45,4 +45,8 @@ public class Basket {
     public void reset() {
         this.x = startX;
     }
+    public Rectangle getBounds(int panelHeight) {
+        return new Rectangle(x, panelHeight - height - 20, width, height);
+    }
+
 }

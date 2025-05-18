@@ -13,6 +13,9 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
     ArrayList<Fruit> fruits = new ArrayList<>();
 
     private int score = 0;
+    private ArrayList<Bomb> bombs = new ArrayList<>();
+    private int bombTimer = 0;
+
     private boolean gameOver = false;
     private Random rand;
     private int missedFruits = 0;
@@ -28,6 +31,11 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         for (int i = 0; i < 3; i++) {
             fruits.add(new Fruit(WIDTH));
         }
+        // Add this after the fruits loop
+        for (int i = 0; i < 2; i++) {
+            bombs.add(new Bomb(WIDTH));
+        }
+
 
         timer = new Timer(20, this);
         timer.start();
@@ -63,6 +71,10 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
             g.setFont(new Font("Arial", Font.PLAIN, 20));
             g.drawString("Press ENTER to Restart", WIDTH / 2 - 100, HEIGHT / 2 + 40);
         }
+        for (Bomb bomb : bombs) {
+            bomb.draw(g);
+        }
+
     }
 
 
@@ -85,7 +97,16 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
                     }
                 }
             }
+            for (Bomb bomb : bombs) {
+                bomb.move();
 
+                if (bomb.reachesBasket(basket, HEIGHT)) {
+                    gameOver = true;
+                    timer.stop();
+                } else if (bomb.isOffScreen(HEIGHT)) {
+                    bomb.reset();
+                }
+            }
             repaint();
         }
     }
@@ -110,6 +131,14 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         for (Fruit fruit : fruits) {
             fruit.reset(WIDTH);
             fruit.resetSpeed();
+        }
+        for (Bomb bomb : bombs) {
+            bomb.reset();
+
+
+            while (bomb.reachesBasket(basket, HEIGHT)) {
+                bomb.reset();
+            }
         }
         gameOver = false;
         timer.start();

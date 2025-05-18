@@ -10,7 +10,7 @@ public class Fruit {
     private Image fruitImage;
     private static final Random rand = new Random();
 
-    // Load 5 fruit images once
+
     private static final Image[] IMAGES = new Image[5];
     static {
         for (int i = 0; i < 5; i++) {
