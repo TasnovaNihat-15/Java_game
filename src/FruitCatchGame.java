@@ -22,6 +22,7 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
     private Random rand;
     private int missedFruits = 0;
 
+    private int nextSpeedIncreaseAt = 50;
 
     public FruitCatchGame() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -33,7 +34,7 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         for (int i = 0; i < 3; i++) {
             fruits.add(new Fruit(WIDTH));
         }
-        // Add this after the fruits loop
+
         for (int i = 0; i < 2; i++) {
             bombs.add(new Bomb(WIDTH));
         }
@@ -104,6 +105,14 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
                         timer.stop();
                     }
                 }
+            }
+            if (score >= nextSpeedIncreaseAt) {
+                for (Fruit fruit : fruits) {
+                    fruit.increaseSpeed();
+                }
+
+
+                nextSpeedIncreaseAt += 50;
             }
             for (Bomb bomb : bombs) {
                 bomb.move();

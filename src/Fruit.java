@@ -44,12 +44,14 @@ public class Fruit {
                 x <= basket.getX() + basket.getWidth();
     }
 
+
+
     public boolean isMissed(int panelHeight) {
         return y > panelHeight;
     }
 
     public void increaseSpeed() {
-        speed++;
+        if(speed<15) speed++;
     }
 
     public void resetSpeed() {
