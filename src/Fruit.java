@@ -53,6 +53,10 @@ public class Fruit {
     public void increaseSpeed() {
         if(speed<15) speed++;
     }
+    public void increaseSpeed(int amount) {
+        speed += amount;
+    }
+
 
     public void resetSpeed() {
         speed = 5;
