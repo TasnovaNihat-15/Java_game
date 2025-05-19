@@ -31,7 +31,7 @@ public class Basket {
 
     public void draw(Graphics g, int panelHeight) {
 
-        g.drawImage(basketImage, x, panelHeight - 60, width, height, null);
+        g.drawImage(basketImage, x, panelHeight - 50, width, height, null);
     }
 
     public int getX() {
@@ -46,7 +46,7 @@ public class Basket {
         this.x = startX;
     }
     public Rectangle getBounds(int panelHeight) {
-        return new Rectangle(x, panelHeight - height - 20, width, height);
+        return new Rectangle(x, panelHeight - 50, width, height);
     }
 
 }

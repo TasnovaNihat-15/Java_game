@@ -20,7 +20,7 @@ public class Fruit {
 
     public Fruit(int panelWidth) {
         this.x = rand.nextInt(panelWidth - size);
-        this.y = -rand.nextInt(300); // Random starting height off-screen
+        this.y = -rand.nextInt(300);
         this.fruitImage = getRandomFruitImage();
     }
 
@@ -34,12 +34,12 @@ public class Fruit {
 
     public void reset(int panelWidth) {
         this.x = rand.nextInt(panelWidth - size);
-        this.y = -rand.nextInt(300); // Reset off-screen
+        this.y = -rand.nextInt(300);
         this.fruitImage = getRandomFruitImage();
     }
 
     public boolean reachesBasket(Basket basket, int panelHeight) {
-        return y + size >= panelHeight - 60 &&
+        return y + size >= panelHeight - 50 &&
                 x + size >= basket.getX() &&
                 x <= basket.getX() + basket.getWidth();
     }

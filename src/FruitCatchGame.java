@@ -54,6 +54,8 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
             fruit.draw(g);
         }
 
+
+
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Score: " + score, 20, 30);
@@ -64,7 +66,9 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         if (paused && !gameOver) {
             g.setFont(new Font("Arial", Font.BOLD, 36));
             g.setColor(Color.BLUE);
-            g.drawString("PAUSED", WIDTH / 2 - 80, HEIGHT / 2);
+            g.drawString("PAUSED", WIDTH / 2 - 120, HEIGHT / 2-40);
+
+
         }
 
 

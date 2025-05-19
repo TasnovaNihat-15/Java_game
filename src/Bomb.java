@@ -25,7 +25,7 @@ public class Bomb {
 
     public void reset() {
         x = rand.nextInt(panelWidth - 30);
-        y = -rand.nextInt(300) - 200; // Spawn off-screen
+        y = -rand.nextInt(300) - 200;
         size = 20;
         speed = 5 + rand.nextInt(3);
     }
