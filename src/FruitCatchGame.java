@@ -10,9 +10,13 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
 
     private boolean waitingForNextLevel = false;
 
+    private int highScore = 0;
+    private final String HIGH_SCORE_FILE = "highscore.txt";
 
     private boolean paused = false;
+
     private Timer timer;
+
     private Basket basket;
     ArrayList<Fruit> fruits = new ArrayList<>();
     private ArrayList<Bomb> bombs = new ArrayList<>();
@@ -23,7 +27,7 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
     private boolean gameOver = false;
 
     private int level = 1;
-    private int nextLevelScore = 50;
+    private int nextLevelScore = 30;
 
     public FruitCatchGame() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -43,6 +47,7 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
 
         timer = new Timer(20, this);
         timer.start();
+        loadHighScore();
     }
 
     @Override
@@ -65,6 +70,7 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Score: " + score, 20, 30);
         g.drawString("Level: " + level, 20, 60);
+        g.drawString("High Score: " + highScore, 20, 90);
 
         String missedText = "Missed: " + missedFruits + "/5";
         FontMetrics metrics = g.getFontMetrics();
@@ -104,7 +110,20 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
             g.drawString("Press ENTER to Restart", WIDTH / 2 - 100, HEIGHT / 2 + 40);
         }
     }
-
+    private void loadHighScore() {
+        try {
+            java.io.File file = new java.io.File(HIGH_SCORE_FILE);
+            if (file.exists()) {
+                java.util.Scanner scanner = new java.util.Scanner(file);
+                if (scanner.hasNextInt()) {
+                    highScore = scanner.nextInt();
+                }
+                scanner.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!gameOver && !paused) {
@@ -142,6 +161,11 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
                     bomb.reset();
                 }
             }
+            if (score > highScore) {
+                highScore = score;
+                saveHighScore();
+            }
+
 
             repaint();
         }
@@ -151,8 +175,21 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         for (Fruit fruit : fruits) {
             fruit.increaseSpeed();
         }
+    }
+
+    private void saveHighScore() {
+            try {
+                java.io.PrintWriter writer = new java.io.PrintWriter(HIGH_SCORE_FILE);
+                writer.println(highScore);
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
 
     }
+
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -191,7 +228,7 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         score = 0;
         missedFruits = 0;
         level = 1;
-        nextLevelScore = 50;
+        nextLevelScore = 30;
         basket.reset();
 
         for (Fruit fruit : fruits) {
