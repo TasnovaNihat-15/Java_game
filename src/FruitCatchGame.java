@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -29,10 +30,23 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
     private int level = 1;
     private int nextLevelScore = 30;
 
+    private BonusFruit bonusFruit;
+    private int bonusTimerCounter = 0;
+    private final int FIRST_BONUS_DELAY = 1000;
+    private final int BONUS_INTERVAL = 1000;
+    private boolean bonusAvailable = false;
+
+
+
+
+
+
+
     public FruitCatchGame() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setFocusable(true);
         addKeyListener(this);
+        bonusFruit = new BonusFruit(WIDTH);
 
         rand = new Random();
         basket = new Basket(200, WIDTH);
@@ -65,6 +79,10 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
         for (Bomb bomb : bombs) {
             bomb.draw(g);
         }
+        if (bonusFruit.isVisible()) {
+            bonusFruit.draw(g);
+        }
+
 
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
@@ -167,6 +185,31 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
             }
 
 
+            bonusTimerCounter++;
+
+            if (!bonusAvailable && bonusTimerCounter >= FIRST_BONUS_DELAY) {
+                bonusAvailable = true;
+                bonusTimerCounter = 0;
+            }
+
+            if (bonusAvailable && bonusTimerCounter >= BONUS_INTERVAL) {
+                bonusFruit = new BonusFruit(WIDTH);
+                bonusTimerCounter = 0;
+            }
+
+            if (bonusFruit.isVisible()) {
+                bonusFruit.move();
+                if (bonusFruit.reachesBasket(basket, HEIGHT)) {
+                    score += 15;
+                    bonusFruit.setVisible(false);
+                } else if (bonusFruit.isMissed(HEIGHT)) {
+                    bonusFruit.setVisible(false);
+                }
+            }
+
+
+
+
             repaint();
         }
     }
@@ -178,13 +221,13 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
     }
 
     private void saveHighScore() {
-            try {
-                java.io.PrintWriter writer = new java.io.PrintWriter(HIGH_SCORE_FILE);
-                writer.println(highScore);
-                writer.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            java.io.PrintWriter writer = new java.io.PrintWriter(HIGH_SCORE_FILE);
+            writer.println(highScore);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
 
@@ -207,7 +250,7 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
             if (e.getKeyCode() == KeyEvent.VK_P){
                 paused = true;
                 timer.stop();
-               repaint();
+                repaint();
 
             }
             if (e.getKeyCode() == KeyEvent.VK_R) {
@@ -242,6 +285,12 @@ public class FruitCatchGame extends JPanel implements ActionListener, KeyListene
                 bomb.reset();
             }
         }
+        bonusTimerCounter = 0;
+        bonusAvailable = false;
+        bonusFruit = new BonusFruit(WIDTH);
+        bonusFruit.setVisible(false);
+
+
 
         gameOver = false;
         paused = false;

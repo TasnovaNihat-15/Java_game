@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public class Fruit {
+public class Fruit extends GameItem {
     private int x, y;
     private final int size = 30;
     private int speed = 7;
@@ -70,3 +70,4 @@ public class Fruit {
         return IMAGES[rand.nextInt(IMAGES.length)];
     }
 }
+
